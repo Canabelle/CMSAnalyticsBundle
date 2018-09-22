@@ -7,7 +7,7 @@
   "license": "MIT",
   "require": {
     "symfony/symfony": "~2.5",
-    "google/apiclient": "^2.0.0@RC"
+    "google/apiclient": "~2.2.2"
   },
   "require-dev": {
   },
