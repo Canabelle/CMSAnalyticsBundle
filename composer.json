@@ -1,0 +1,24 @@
+{
+  "name": "canabelle/cms-analytics-bundle",
+  "type": "symfony-bundle",
+  "description": "Canabelle CMS AnalyticsBundle",
+  "keywords": ["symfony", "sonata", "dashboard", "analytcis"],
+  "homepage": "http://www.canabelle.com",
+  "license": "MIT",
+  "require": {
+    "symfony/symfony": "~2.5",
+    "google/apiclient": "^2.0.0@RC"
+  },
+  "require-dev": {
+  },
+  "suggest": {
+  },
+  "autoload": {
+    "psr-4": { "Canabelle\\CMSAnalyticsBundle\\": "" }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
+  }
+}

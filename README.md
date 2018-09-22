@@ -1,1 +1,1 @@
-# CMSAnalyticsBundle
+# analytics-dashboard-bundle

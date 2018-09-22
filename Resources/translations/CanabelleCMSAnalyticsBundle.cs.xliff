@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" target-language="en" datatype="plaintext" original="CmfMenuBundle.en.xliff">
+        <body>
+            <trans-unit id="dashboard.block.dashboard.title">
+                <source>dashboard.block.dashboard.title</source>
+                <target>Google Analytics</target>
+            </trans-unit>
+            <trans-unit id="dashboard.block.dashboard.label">
+                <source>dashboard.block.dashboard.label</source>
+                <target>Úvod</target>
+            </trans-unit>
+            <trans-unit id="dashboard.block.dashboard.link">
+                <source>dashboard.block.dashboard.link</source>
+                <target>Úplný výpis</target>
+            </trans-unit>
+            <trans-unit id="title.today">
+                <source>title.today</source>
+                <target>Dnes</target>
+            </trans-unit>
+            <trans-unit id="title.yesterday">
+                <source>title.yesterday</source>
+                <target>Včera</target>
+            </trans-unit>
+            <trans-unit id="label.visit">
+                <source>label.visit</source>
+                <target>Návštěvnost</target>
+            </trans-unit>
+            <trans-unit id="label.new_visit">
+                <source>label.new_visit</source>
+                <target>Nové návštěvy</target>
+            </trans-unit>
+            <trans-unit id="label.page_view">
+                <source>label.page_view</source>
+                <target>Zobrazení stránky</target>
+            </trans-unit>
+            <trans-unit id="label.page_per_visit">
+                <source>label.page_per_visit</source>
+                <target>Stránky / návštěvy</target>
+            </trans-unit>
+            <trans-unit id="label.avg_time_on_site">
+                <source>label.avg_time_on_site</source>
+                <target>Průměrný čas na stránce</target>
+            </trans-unit>
+            <trans-unit id="label.visit_bounce_rate">
+                <source>label.visit_bounce_rate</source>
+                <target>Bounce Rate</target>
+            </trans-unit>
+            <trans-unit id="alert.dummy_configuration">
+                <source>alert.dummy_configuration</source>
+                <target>Upozornění: Služba Google analytics není konfigurována. Tato data jsou pouze falešná pro testování jednotky.</target>
+            </trans-unit>
+            <trans-unit id="breadcrumb.dashboard">
+                <source>breadcrumb.dashboard</source>
+                <target>Google Analytics</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
