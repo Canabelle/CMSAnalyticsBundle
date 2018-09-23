@@ -7,11 +7,10 @@ services:
         class: %canabelle_cms_analytics.block.dashboard.class%
         tags:
             - { name: sonata.block }
-        arguments: [ canabelle_cms_analytics.block.dashboard, @templating, @sonata.admin.pool]
+        arguments: [ canabelle_cms_analytics.block.dashboard, @templating, @canabelle_cms_analytics.manager.google_analytics]
 
     canabelle_cms_analytics.manager.google_analytics:
         class: %canabelle_cms_analytics.manager.google_analytics.class%
         calls:
             - [ setProfileId, [%canabelle_cms_analytics.profile_id%] ]
-            - [ setClientId, [%canabelle_cms_analytics.client_id%] ]
             - [ setPrivateKeyFile, [%canabelle_cms_analytics.private_key_file%] ]

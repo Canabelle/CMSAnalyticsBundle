@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file source-language="en" target-language="en" datatype="plaintext" original="CmfMenuBundle.en.xliff">
+    <file source-language="en" target-language="en" datatype="plaintext" original="CanabelleCMSAnalyticsBundle.en.xliff">
         <body>
             <trans-unit id="dashboard.block.dashboard.title">
                 <source>dashboard.block.dashboard.title</source>
-                <target>Google Analytics</target>
-            </trans-unit>
-            <trans-unit id="dashboard.block.dashboard.label">
-                <source>dashboard.block.dashboard.label</source>
-                <target>Úvod</target>
-            </trans-unit>
-            <trans-unit id="dashboard.block.dashboard.link">
-                <source>dashboard.block.dashboard.link</source>
-                <target>Úplný výpis</target>
+                <target>Návštěvnost za měsíc</target>
             </trans-unit>
             <trans-unit id="title.today">
                 <source>title.today</source>
@@ -22,29 +14,41 @@
                 <source>title.yesterday</source>
                 <target>Včera</target>
             </trans-unit>
+            <trans-unit id="title.last_month">
+                <source>title.last_month</source>
+                <target>Měsíc</target>
+            </trans-unit>
+            <trans-unit id="label.users">
+                <source>label.users</source>
+                <target>Uživatelů</target>
+            </trans-unit>
             <trans-unit id="label.visit">
                 <source>label.visit</source>
-                <target>Návštěvnost</target>
+                <target>Návštěv</target>
             </trans-unit>
             <trans-unit id="label.new_visit">
                 <source>label.new_visit</source>
-                <target>Nové návštěvy</target>
+                <target><![CDATA[Nových<br/>uživatelů]]></target>
             </trans-unit>
             <trans-unit id="label.page_view">
                 <source>label.page_view</source>
-                <target>Zobrazení stránky</target>
+                <target>Zobrazení stránek</target>
             </trans-unit>
             <trans-unit id="label.page_per_visit">
                 <source>label.page_per_visit</source>
-                <target>Stránky / návštěvy</target>
+                <target><![CDATA[Počet návštěv na&nbsp;uživatele]]></target>
+            </trans-unit>
+            <trans-unit id="label.page_view_per_session">
+                <source>label.page_view_per_session</source>
+                <target><![CDATA[Počet stránek na&nbsp;1&nbsp;návštěvu]]></target>
             </trans-unit>
             <trans-unit id="label.avg_time_on_site">
                 <source>label.avg_time_on_site</source>
-                <target>Průměrný čas na stránce</target>
+                <target><![CDATA[Prům. doba trvání&nbsp;návštěvy]]></target>
             </trans-unit>
             <trans-unit id="label.visit_bounce_rate">
                 <source>label.visit_bounce_rate</source>
-                <target>Bounce Rate</target>
+                <target>Míra okamžitého opuštění</target>
             </trans-unit>
             <trans-unit id="alert.dummy_configuration">
                 <source>alert.dummy_configuration</source>

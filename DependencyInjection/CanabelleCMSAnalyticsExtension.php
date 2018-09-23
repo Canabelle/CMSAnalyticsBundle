@@ -25,7 +25,6 @@ class CanabelleCMSAnalyticsExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('canabelle_cms_analytics.client_id', $config['client_id']);
         $container->setParameter('canabelle_cms_analytics.profile_id', $config['profile_id']);
         $container->setParameter('canabelle_cms_analytics.private_key_file', $config['private_key_file']);
     }

@@ -1,31 +1,29 @@
 <?php
 
 namespace Canabelle\CMSAnalyticsBundle\Model;
+
 use Canabelle\CMSAnalyticsBundle\Model\Response\Row;
-use Widop\GoogleAnalytics\Client;
-use Widop\GoogleAnalytics\Query;
-use Widop\GoogleAnalytics\Response;
-use Widop\GoogleAnalytics\Service;
-use Widop\HttpAdapter\CurlHttpAdapter;
 
 class GoogleAnalyticsManager
 {
+    //used to determine if configuration is set or not
+    const DUMMY_PROFILE_ID = 'ga:YOUR_PROFIL_ID';
+
     /**
      * @var string
      */
     protected $profileId;
-    /**
-     * @var string
-     */
-    protected $clientId;
+
     /**
      * @var string
      */
     protected $privateKeyFile;
+
     /**
-     * @var Service
+     * @var \Google_Service_Analytics
      */
     protected $service;
+
     /**
      * @param string $profileId
      */
@@ -33,13 +31,7 @@ class GoogleAnalyticsManager
     {
         $this->profileId = $profileId;
     }
-    /**
-     * @param string $clientId
-     */
-    public function setClientId($clientId)
-    {
-        $this->clientId = $clientId;
-    }
+
     /**
      * @param string $privateKeyFile
      */
@@ -47,25 +39,23 @@ class GoogleAnalyticsManager
     {
         $this->privateKeyFile = $privateKeyFile;
     }
+
     /**
-     * @return Query
-     */
-    protected function getQuery()
-    {
-        return new Query($this->profileId);
-    }
-    /**
-     * @return Service
+     * @return \Google_Service_Analytics
+     * @throws \Google_Exception
      */
     protected function getService()
     {
         if ($this->service == null) {
-            $httpAdapter = new CurlHttpAdapter();
-            $client = new Client($this->clientId, $this->privateKeyFile, $httpAdapter);
-            $this->service = new Service($client);
+            $client = new \Google_Client();
+            $client->setApplicationName("Hello Analytics Reporting");
+            $client->setAuthConfig($this->privateKeyFile);
+            $client->setScopes(['https://www.googleapis.com/auth/analytics.readonly']);
+            $this->service = new \Google_Service_Analytics($client);
         }
         return $this->service;
     }
+
     /**
      * Return base metrics for detailed queries
      *
@@ -73,16 +63,18 @@ class GoogleAnalyticsManager
      */
     protected function getMetrics()
     {
-        return array(
+        return [
             'ga:pageviews',
-            'ga:pageviewsPerVisit',
-            'ga:visits',
-            'ga:newVisits',
-            'ga:timeOnSite',
-            'ga:avgTimeOnSite',
-            'ga:visitBounceRate'
-        );
+            'ga:pageviewsPerSession',
+            'ga:sessionsPerUser',
+            'ga:sessions',
+            'ga:users',
+            'ga:newUsers',
+            'ga:avgSessionDuration',
+            'ga:bounceRate'
+        ];
     }
+
     /**
      * Check if configuration is set or if we are in fake mode
      *
@@ -92,103 +84,118 @@ class GoogleAnalyticsManager
     {
         return ($this->profileId == self::DUMMY_PROFILE_ID);
     }
+
     /**
      * @return Row
+     * @throws \Google_Exception
      */
     public function getToday()
     {
-        return $this->doQuery(array(
-            'dimensions'    => array('ga:date'),
+        return $this->doQuery([
+            'dimensions'    => ['ga:date'],
             'metrics'       => $this->getMetrics(),
             'start-date'    => date('Y-m-d'),
             'end-date'      => date('Y-m-d')
-        ));
+        ]);
     }
+
     /**
      * @return Row
+     * @throws \Google_Exception
      */
     public function getYesterday()
     {
-        return $this->doQuery(array(
-            'dimensions'    => array('ga:date'),
+        return $this->doQuery([
+            'dimensions'    => ['ga:date'],
             'metrics'       => $this->getMetrics(),
             'start-date'    => date('Y-m-d', strtotime('yesterday')),
             'end-date'      => date('Y-m-d', strtotime('yesterday'))
-        ));
+        ]);
     }
+
     /**
      * @return Row
+     * @throws \Google_Exception
      */
     public function getLastMonth()
     {
-        return $this->doQuery(array(
-            'dimensions'    => array('ga:date'),
+        return $this->doQuery([
+            'dimensions'    => [],
             'metrics'       => $this->getMetrics(),
-            'start-date'    => date('Y-m-d', strtotime('31 days ago')),
+            'start-date'    => date('Y-m-d', strtotime('30 days ago')),
             'end-date'      => date('Y-m-d', strtotime('yesterday'))
-        ));
+        ]);
     }
+
     /**
-     * @todo
+     * @return Row[]
+     * @throws \Google_Exception
      */
-    public function getTopContent()
+    public function getLastMonthVisits()
     {
+        return $this->doQuery([
+            'dimensions'    => ['ga:date'],
+            'metrics'       => ['ga:users'],
+            'start-date'    => date('Y-m-d', strtotime('30 days ago')),
+            'end-date'      => date('Y-m-d', strtotime('yesterday'))
+        ], true);
     }
-    /**
-     * @todo
-     */
-    public function getTopReferrers()
-    {
-    }
+
     /**
      * Request google analytics
      *
-     * @param  array       $parameters
-     * @param  bool        $multipleResults
-     * @return array|mixed
+     * @param array $parameters
+     * @param bool $multipleResults
+     * @return Row|Row[]|mixed
+     * @throws \Google_Exception
      */
     protected function doQuery(array $parameters, $multipleResults = false)
     {
-        $parameters += array(
-            'dimensions' => array(),
-            'metrics' => array(),
-            'sort' =>  array(),
-            'filters'=>array(),
-            'start-date'=>null,
-            'end-date'=> null,
+        $parameters += [
+            'dimensions'  => [],
+            'metrics'     => [],
+            'start-date'  => null,
+            'end-date'    => null,
             'start-index' => 1,
-            'max-results' => 30,
-            'prettyprint'=> 'true'
+            'max-results' => 100,
+            'output'      => 'json'
+        ];
+
+        $response = $this->getService()->data_ga->get(
+            'ga:' . $this->profileId,
+            $parameters['start-date'],
+            $parameters['end-date'],
+            implode(',', $parameters['metrics']),
+            [
+                'dimensions' => implode(',', $parameters['dimensions']),
+                'start-index' => $parameters['start-index'],
+                'max-results' => $parameters['max-results'],
+                'output' => $parameters['output'],
+            ]
         );
-        $query = $this->getQuery();
-        $query->setStartDate(new \DateTime($parameters['start-date']));
-        $query->setEndDate(new \DateTime($parameters['end-date']));
-        $query->setMetrics($parameters['metrics']);
-        $query->setDimensions($parameters['dimensions']);
-        $query->setSorts($parameters['sort']);
-        $query->setFilters($parameters['filters']);
-        $query->setStartIndex($parameters['start-index']);
-        $query->setMaxResults($parameters['max-results']);
-        $query->setPrettyPrint($parameters['prettyprint']);
-        $query->setCallback(null);
-        $response = $this->getService()->query($query);
+
         $results = $this->formatResponse($response, array_merge($parameters['dimensions'], $parameters['metrics']));
+
         if ($multipleResults == false) {
             return array_shift($results);
         }
+
         return $results;
     }
+
     /**
-     * @param  Response $response
+     * @param  \Google_Service_Analytics_GaData $response
      * @param  array    $cols
-     * @return array
+     * @return Row[]
      */
-    protected function formatResponse(Response $response, array $cols)
+    protected function formatResponse(\Google_Service_Analytics_GaData $response, array $cols)
     {
-        $results = array();
+        $results = [];
+
         foreach ($response->getRows() as $row) {
             $results[] = new Row(array_combine($cols, $row));
         }
+
         return $results;
     }
 }

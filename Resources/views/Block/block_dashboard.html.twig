@@ -1,69 +1,212 @@
-<div class="box">
-    <div class="box-header with-border">
-        <h3 class="box-title">Google Analytics</h3>
-    </div>
-    <div class="box-body">
-        <div class="chart">
-            <canvas id="lineChart" style="height:250px"></canvas>
+{% extends sonata_block.templates.block_base %}
+
+{% trans_default_domain 'CanabelleCMSAnalyticsBundle' %}
+
+{% block block %}
+    <script src="/bundles/canabellecmsanalytics/js/Chart.min.js"></script>
+
+    <style>
+        .box-ga th {
+            color:#337ab7;
+            text-transform: uppercase;
+        }
+        .box-ga th {
+            width: 12.5%;
+        }
+    </style>
+
+    <div class="box box-primary box-ga">
+        <div class="box-header with-border">
+            <h3 class="box-title">{{ 'dashboard.block.dashboard.title'|trans }}</h3>
+        </div>
+        <div class="box-body">
+            <div class="chart">
+                <canvas id="lineChart" style="height:250px"></canvas>
+            </div>
+            <table class="table table-bordered sonata-ba-list">
+                <thead>
+                <tr><th colspan="8">{{ 'title.today'|trans }}</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="center">
+                        <div>{{ today_users }}</div>
+                        <strong>{{ 'label.users'|trans }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ today_new_visit }}</div>
+                        <strong>{{ 'label.new_visit'|trans|raw }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ today_visit }}</div>
+                        <strong>{{ 'label.visit'|trans }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ today_page_per_visit }}</div>
+                        <strong>{{ 'label.page_per_visit'|trans|raw }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ today_page_view }}</div>
+                        <strong>{{ 'label.page_view'|trans }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ today_page_per_session }}</div>
+                        <strong>{{ 'label.page_view_per_session'|trans|raw }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ today_avg_time_on_site }}</div>
+                        <strong>{{ 'label.avg_time_on_site'|trans|raw }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ today_visit_bounce_rate }} %</div>
+                        <strong>{{ 'label.visit_bounce_rate'|trans }}</strong>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered sonata-ba-list">
+                <thead>
+                <tr><th colspan="8">{{ 'title.yesterday'|trans }}</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="center">
+                        <div>{{ yesterday_users }}</div>
+                        <strong>{{ 'label.users'|trans }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ yesterday_new_visit }}</div>
+                        <strong>{{ 'label.new_visit'|trans|raw }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ yesterday_visit }}</div>
+                        <strong>{{ 'label.visit'|trans }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ yesterday_page_per_visit }}</div>
+                        <strong>{{ 'label.page_per_visit'|trans|raw }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ yesterday_page_view }}</div>
+                        <strong>{{ 'label.page_view'|trans }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ yesterday_page_per_session }}</div>
+                        <strong>{{ 'label.page_view_per_session'|trans|raw }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ yesterday_avg_time_on_site }}</div>
+                        <strong>{{ 'label.avg_time_on_site'|trans|raw }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ yesterday_visit_bounce_rate }} %</div>
+                        <strong>{{ 'label.visit_bounce_rate'|trans }}</strong>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered sonata-ba-list">
+                <thead>
+                <tr><th colspan="8">{{ 'title.last_month'|trans }}</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="center">
+                        <div>{{ month_users }}</div>
+                        <strong>{{ 'label.users'|trans }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ month_new_visit }}</div>
+                        <strong>{{ 'label.new_visit'|trans|raw }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ month_visit }}</div>
+                        <strong>{{ 'label.visit'|trans }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ month_page_per_visit }}</div>
+                        <strong>{{ 'label.page_per_visit'|trans|raw }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ month_page_view }}</div>
+                        <strong>{{ 'label.page_view'|trans }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ month_page_per_session }}</div>
+                        <strong>{{ 'label.page_view_per_session'|trans|raw }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ month_avg_time_on_site }}</div>
+                        <strong>{{ 'label.avg_time_on_site'|trans|raw }}</strong>
+                    </td>
+                    <td class="center">
+                        <div>{{ month_visit_bounce_rate }} %</div>
+                        <strong>{{ 'label.visit_bounce_rate'|trans }}</strong>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-</div>
-<script>
-    var areaChartData = {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
-        datasets: [
-            {
-                label: "Digital Goods",
-                fillColor: "rgba(60,141,188,0.9)",
-                strokeColor: "rgba(60,141,188,0.8)",
-                pointColor: "#3b8bba",
-                pointStrokeColor: "rgba(60,141,188,1)",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(60,141,188,1)",
-                data: [28, 48, 40, 19, 86, 27, 90]
-            }
-        ]
-    };
+    <script>
+        var areaChartData = {
+            labels: ['{{ chartLabels|join("','")|raw }}'],
+            datasets: [
+                {
+                    label: "{{ 'dashboard.block.dashboard.title'|trans }}",
+                    fillColor: "rgba(60,141,188,0.9)",
+                    strokeColor: "rgba(60,141,188,0.8)",
+                    pointColor: "#3b8bba",
+                    pointStrokeColor: "rgba(60,141,188,1)",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(60,141,188,1)",
+                    data: [{{ chartNumbers|join(',') }}]
+                }
+            ]
+        };
 
-    var areaChartOptions = {
-        //Boolean - If we should show the scale at all
-        showScale: true,
-        //Boolean - Whether grid lines are shown across the chart
-        scaleShowGridLines: false,
-        //String - Colour of the grid lines
-        scaleGridLineColor: "rgba(0,0,0,.05)",
-        //Number - Width of the grid lines
-        scaleGridLineWidth: 1,
-        //Boolean - Whether to show horizontal lines (except X axis)
-        scaleShowHorizontalLines: true,
-        //Boolean - Whether to show vertical lines (except Y axis)
-        scaleShowVerticalLines: true,
-        //Boolean - Whether the line is curved between points
-        bezierCurve: true,
-        //Number - Tension of the bezier curve between points
-        bezierCurveTension: 0.3,
-        //Boolean - Whether to show a dot for each point
-        pointDot: false,
-        //Number - Radius of each point dot in pixels
-        pointDotRadius: 4,
-        //Number - Pixel width of point dot stroke
-        pointDotStrokeWidth: 1,
-        //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-        pointHitDetectionRadius: 20,
-        //Boolean - Whether to show a stroke for datasets
-        datasetStroke: true,
-        //Number - Pixel width of dataset stroke
-        datasetStrokeWidth: 2,
-        datasetFill: true,
-        //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-        maintainAspectRatio: true,
-        //Boolean - whether to make the chart responsive to window resizing
-        responsive: true
-    };
+        var areaChartOptions = {
+            //Boolean - If we should show the scale at all
+            showScale: true,
+            //Boolean - Whether grid lines are shown across the chart
+            scaleShowGridLines: false,
+            //String - Colour of the grid lines
+            scaleGridLineColor: "rgba(0,0,0,.05)",
+            //Number - Width of the grid lines
+            scaleGridLineWidth: 1,
+            //Boolean - Whether to show horizontal lines (except X axis)
+            scaleShowHorizontalLines: true,
+            //Boolean - Whether to show vertical lines (except Y axis)
+            scaleShowVerticalLines: true,
+            //Boolean - Whether the line is curved between points
+            bezierCurve: true,
+            //Number - Tension of the bezier curve between points
+            bezierCurveTension: 0.3,
+            //Boolean - Whether to show a dot for each point
+            pointDot: false,
+            //Number - Radius of each point dot in pixels
+            pointDotRadius: 4,
+            //Number - Pixel width of point dot stroke
+            pointDotStrokeWidth: 1,
+            //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+            pointHitDetectionRadius: 20,
+            //Boolean - Whether to show a stroke for datasets
+            datasetStroke: true,
+            //Number - Pixel width of dataset stroke
+            datasetStrokeWidth: 2,
+            datasetFill: true,
+            //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+            maintainAspectRatio: true,
+            //Boolean - whether to make the chart responsive to window resizing
+            responsive: true
+        };
 
-    var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
-    var lineChart = new Chart(lineChartCanvas);
-    var lineChartOptions = areaChartOptions;
-    lineChartOptions.datasetFill = false;
-    lineChart.Line(areaChartData, lineChartOptions);
-</script>
+        var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
+        var lineChart = new Chart(lineChartCanvas);
+        var lineChartOptions = areaChartOptions;
+        lineChartOptions.datasetFill = false;
+        lineChart.Line(areaChartData, lineChartOptions);
+    </script>
+{% endblock %}

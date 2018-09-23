@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file source-language="en" target-language="en" datatype="plaintext" original="CmfMenuBundle.en.xliff">
+    <file source-language="en" target-language="en" datatype="plaintext" original="CanabelleCMSAnalyticsBundle.en.xliff">
         <body>
             <trans-unit id="dashboard.block.dashboard.title">
                 <source>dashboard.block.dashboard.title</source>
-                <target>Google Analytics</target>
+                <target>Last month visits</target>
             </trans-unit>
             <trans-unit id="dashboard.block.dashboard.label">
                 <source>dashboard.block.dashboard.label</source>
@@ -22,6 +22,10 @@
                 <source>title.yesterday</source>
                 <target>Yesterday</target>
             </trans-unit>
+            <trans-unit id="title.last_month">
+                <source>title.last_month</source>
+                <target>Month</target>
+            </trans-unit>
             <trans-unit id="label.visit">
                 <source>label.visit</source>
                 <target>Visits</target>
@@ -32,11 +36,15 @@
             </trans-unit>
             <trans-unit id="label.page_view">
                 <source>label.page_view</source>
-                <target>Page views</target>
+                <target>Pageviews</target>
             </trans-unit>
             <trans-unit id="label.page_per_visit">
                 <source>label.page_per_visit</source>
-                <target>Pages / visits</target>
+                <target>Number of pageviews per visits</target>
+            </trans-unit>
+            <trans-unit id="label.page_view_per_session">
+                <source>label.page_view_per_session</source>
+                <target>Pageviews per 1 visit</target>
             </trans-unit>
             <trans-unit id="label.avg_time_on_site">
                 <source>label.avg_time_on_site</source>

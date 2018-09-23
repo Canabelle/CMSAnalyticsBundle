@@ -22,9 +22,20 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('client_id')->defaultValue('cliend-id@developer.gserviceaccount.com')->end()
-                ->scalarNode('profile_id')->defaultValue('ga:profile-id')->end()
-                ->scalarNode('private_key_file')->defaultValue('%kernel.root_dir%/Resources/bin/google_analytics_private_key.p12')->end()
+                ->scalarNode('profile_id')->defaultValue('google-analytics-profile-id')->end()
+                # If you don't know your profile ID, please open the Google Analytics website, login, and select the website you want to monitor with PRTG.
+                # In your web browser's URL field you will see content similar to this:
+                # https://www.google.com/analytics/web/#report/visitors-overview/a5559982w55599512p12345678
+                # Please note the structure at the end of the URL:
+                # /a[6 digits]w[8 digits]p[8 digits]
+                # The 8 digits that follow the "p" are your profile ID. In the example above, this would be 12345678.
+
+                ->scalarNode('private_key_file')->defaultValue('%kernel.root_dir%/Resources/bin/google_analytics_private_key.json')->end()
+                # In https://console.cloud.google.com/apis/credentials click to "Create credentials" button
+                # Select "Service account key"
+                # Choose JSON type
+                #
+                # In Google Analytics (Admin / Property - User Management) set Read & Analyze permissions to client_email from key file.
             ->end()
         ;
 
